@@ -10,6 +10,9 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
+	<name>Clauseway Functional Runtime</name>
+	<description>Continuations, fibers, schedulers and the step interpreter.</description>
+
 	<artifactId>functional-runtime</artifactId>
 
 	<dependencies>

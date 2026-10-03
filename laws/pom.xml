@@ -10,6 +10,9 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
+	<name>Clauseway Functional Laws</name>
+	<description>The generic law-checking framework: test-time discovery of algebraic claims.</description>
+
 	<artifactId>functional-laws</artifactId>
 
 	<dependencies>

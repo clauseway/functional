@@ -10,6 +10,16 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
+	<name>Clauseway Functional Playground</name>
+	<description>Unpublished experiments; excluded from releases.</description>
+
+	<properties>
+		<skipPublishing>true</skipPublishing>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<maven.source.skip>true</maven.source.skip>
+		<gpg.skip>true</gpg.skip>
+	</properties>
+
 	<artifactId>functional</artifactId>
 
 	<dependencies>

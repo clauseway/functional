@@ -10,6 +10,9 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
+	<name>Clauseway Functional Algebra</name>
+	<description>Semiring, lattice and monoid interfaces with their capability hierarchy.</description>
+
 	<artifactId>functional-algebra</artifactId>
 
 	<dependencies>

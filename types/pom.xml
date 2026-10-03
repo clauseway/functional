@@ -10,6 +10,9 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
+	<name>Clauseway Functional Types</name>
+	<description>House tuples and core value types for the Clauseway stack.</description>
+
 	<artifactId>functional-types</artifactId>
 
 	<dependencies>
