@@ -30,9 +30,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:https://github.com/tomasz-gac/functional.git</connection>
-		<developerConnection>scm:git:git@github.com:tomasz-gac/functional.git</developerConnection>
-		<url>https://github.com/tomasz-gac/functional</url>
+		<connection>scm:git:https://github.com/clauseway/functional.git</connection>
+		<developerConnection>scm:git:git@github.com:clauseway/functional.git</developerConnection>
+		<url>https://github.com/clauseway/functional</url>
 	</scm>
 
 	<licenses>
