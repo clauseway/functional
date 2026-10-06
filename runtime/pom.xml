@@ -15,6 +15,10 @@
 
 	<artifactId>functional-runtime</artifactId>
 
+	<properties>
+		<automatic.module.name>org.clauseway.functional.runtime</automatic.module.name>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.clauseway</groupId>

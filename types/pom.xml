@@ -15,6 +15,10 @@
 
 	<artifactId>functional-types</artifactId>
 
+	<properties>
+		<automatic.module.name>org.clauseway.functional.types</automatic.module.name>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

@@ -15,6 +15,10 @@
 
 	<artifactId>functional-algebra</artifactId>
 
+	<properties>
+		<automatic.module.name>org.clauseway.functional.algebra</automatic.module.name>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

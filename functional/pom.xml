@@ -18,6 +18,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<maven.source.skip>true</maven.source.skip>
 		<gpg.skip>true</gpg.skip>
+		<automatic.module.name>org.clauseway.functional.playground</automatic.module.name>
 	</properties>
 
 	<artifactId>functional</artifactId>

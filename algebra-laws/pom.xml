@@ -15,6 +15,10 @@
 
 	<artifactId>functional-algebra-laws</artifactId>
 
+	<properties>
+		<automatic.module.name>org.clauseway.functional.algebra.laws</automatic.module.name>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.clauseway</groupId>

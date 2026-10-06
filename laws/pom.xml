@@ -15,6 +15,10 @@
 
 	<artifactId>functional-laws</artifactId>
 
+	<properties>
+		<automatic.module.name>org.clauseway.functional.laws</automatic.module.name>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
