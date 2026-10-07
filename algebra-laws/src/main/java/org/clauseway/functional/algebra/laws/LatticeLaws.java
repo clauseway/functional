@@ -16,9 +16,11 @@ import org.clauseway.functional.laws.LawRegistry;
  * A lattice is NOT a semilattice — it is one value type carrying two
  * semilattice structures, so the second structure arrives here as a
  * PROJECTION ({@code join}, a plain binary op), never as a second
- * inherited face. The value type implements a meet-flavored {@link Semilattice}
- * (its canonical order); these kits check the projection's own
- * semilattice laws and the absorption that interlocks the two.
+ * inherited interface. The value type implements a meet-flavored {@link Semilattice}
+ * (its canonical order); {@link #check} checks the projection's own
+ * semilattice laws and the absorption that interlocks the two, while
+ * {@link #checkInflationary} requires only that the projection is an upper
+ * bound of its arguments.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class LatticeLaws {
@@ -36,7 +38,12 @@ public final class LatticeLaws {
 		LawRegistry.recordSamples("lattice", xs);
 	}
 
-	/** Approximate joins: sound to generalize over, not exact — skip absorption. */
+	/**
+	 * Approximate joins: sound to generalize over, not exact — skips absorption
+	 * and the projection's semilattice laws, requiring only that
+	 * {@code join(a, b)} is an upper bound of both {@code a} and {@code b}
+	 * under {@code leq}.
+	 */
 	public static <L extends Semilattice<L> & PartialOrder<L>> void checkInflationary(List<L> xs, BinaryOperator<L> join) {
 		SemilatticeLaws.checkLeqReversesAccumulation(xs);
 		for (L a : xs) {

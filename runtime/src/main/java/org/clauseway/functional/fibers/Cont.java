@@ -10,6 +10,17 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * A continuation-passing computation over {@link Fiber}: a {@code Cont<T, R>}
+ * is a function that takes a continuation {@code Fiber.Fn<T, R>} (what to do
+ * with the {@code T}) and returns the {@code Fiber<R>} of the whole run.
+ * {@link #just}, {@link #complete}, {@link #suspend} and {@link #defer} build
+ * one; {@link #map} and {@link #flatMap} chain them; {@link #callCC} hands
+ * the body its current continuation as a {@link Resume}, and applying that
+ * {@code Resume} skips the rest of the body. {@link #run} and
+ * {@link #runRec} supply the final continuation and yield the {@code Fiber<R>}
+ * to schedule.
+ */
 public interface Cont<T, R> extends Fiber.Fn<Fiber.Fn<T, R>, R> {
 
 	default <B> Cont<B, R> map(Function<? super T, ? extends B> f) {

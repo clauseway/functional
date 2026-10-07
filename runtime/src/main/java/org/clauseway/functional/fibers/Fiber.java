@@ -25,6 +25,18 @@ import lombok.Value;
 import lombok.experimental.FieldDefaults;
 import lombok.var;
 
+/**
+ * A computation producing an {@code A}, represented as a tree of nodes that
+ * {@link org.clauseway.functional.fibers.interpreter.Frame} interprets one
+ * step at a time under a {@link Scheduler}. {@link #done} and {@link #defer}
+ * build leaves, {@link #flatMap} and {@link #map} sequence them, and the
+ * static factories {@link #fork}, {@link #detach}, {@link #claim},
+ * {@link #sealed}, {@link #produce}, {@link #await} and {@link #named} build
+ * the control nodes (the nested classes) whose meaning is given by the
+ * interpreter. {@link #ground()} runs the fiber to completion on a fresh
+ * {@link BreadthFirstScheduler}; a ground that itself grounds throws, since
+ * nested engines would stack on the JVM stack.
+ */
 public interface Fiber<A> {
 	interface Fn<T, R> extends Function<T, Fiber<R>> {
 	}
@@ -50,10 +62,9 @@ public interface Fiber<A> {
 	}
 
 	/**
-	 * The SANCTIONED nesting door: ground this fiber on a fresh engine,
+	 * The SANCTIONED way to nest runs: ground this fiber on a fresh engine,
 	 * deliberately, even inside a running engine. Legitimate only for PURE,
-	 * single-completion fibers (the unifier's walks, renames, display
-	 * renders — no parks, no forks, no channels): an effectful fiber ground
+	 * single-completion fibers (no parks, no forks, no channels): an effectful fiber ground
 	 * here shares no scheduler state with the outer run, a parking one
 	 * strands loudly, but a forking one silently keeps only its last
 	 * completion.
@@ -294,8 +305,10 @@ public interface Fiber<A> {
 	}
 
 	/**
-	 * ABOUTME: Represents a detached fiber that runs independently in the background.
-	 * ABOUTME: The parent fiber completes immediately while the detached fiber continues execution.
+	 * A fiber to run as an independent frame: the interpreter queues
+	 * {@code fiber} as a child frame owned by {@code into} ({@code null} for
+	 * unowned) and completes this node with {@link Nothing} immediately, so
+	 * the detaching fiber continues without waiting for the child.
 	 */
 	@Value
 	@RequiredArgsConstructor

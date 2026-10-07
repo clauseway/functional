@@ -24,6 +24,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Breadth-first scheduler that trades fairness for speed. Buckets of frames are
+ * ordered by fork depth and stepped shallowest first, round-robin within a
+ * bucket. Forked children (one depth below the forking frame) and detached
+ * children (at the parent's depth) merge into the shallowest bucket only when
+ * it already sits at their depth; otherwise they form a bucket of their own, so
+ * one depth may hold several sibling buckets. Once the shallowest bucket has
+ * been stepped more than {@code iterationsForPromotion} times (default 100)
+ * and another bucket exists, its frames are merged into the next-shallowest
+ * bucket. A frame resumed from an await re-enters the shallowest bucket.
+ */
 @SuppressWarnings("unchecked")
 public final class UnfairBreadthFirstScheduler<A> implements Scheduler<A>, Frame.Effects<UnfairBreadthFirstScheduler.Entry>, SearchInspectable {
 

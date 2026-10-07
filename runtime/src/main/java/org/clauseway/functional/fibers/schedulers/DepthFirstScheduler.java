@@ -21,6 +21,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Depth-first scheduler: a LIFO stack of frames whose top frame is stepped
+ * until it completes or parks. Forked children are pushed beneath the forking
+ * frame with the first option on top, one depth below the forking frame, so
+ * once the forking frame completes or parks the first option runs before its
+ * siblings. A detached child is pushed beneath its parent in the same way, at
+ * the parent's depth. A frame resumed from an await is pushed on top and runs
+ * before everything below it.
+ */
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DepthFirstScheduler<A> implements Scheduler<A>, Frame.Effects<DepthFirstScheduler.Entry>, SearchInspectable {

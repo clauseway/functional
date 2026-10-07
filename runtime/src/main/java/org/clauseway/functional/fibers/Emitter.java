@@ -7,7 +7,7 @@ import org.clauseway.functional.Nothing;
 
 /**
  * The ONE way to produce (emit.md): minted only by
- * {@link Fiber#produce}, typed against the cell, executed by the
+ * {@link Fiber#produce} and {@link Fiber#produceOrElse}, typed against the cell, executed by the
  * interpreter in the emitting frame's own workforce — an emit from a
  * foreign workforce refuses loudly. Abort by not emitting; produce many
  * by emitting repeatedly.

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * The family's unbounded member: where the typed classes stop at arity 8,
  * this one holds any wider row flat. No accessors and no apply — a caller
- * wide enough to need it speaks the structural contract directly.
+ * wide enough to need it uses the structural contract directly.
  */
 public final class TupleN implements Tuple {
 

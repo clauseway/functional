@@ -15,8 +15,9 @@ import java.util.Set;
  * {@code star} "loop any number of times". The {@link Semirings#PROVENANCE}
  * semiring is idempotent (union) and closed (a real {@code star}) but NOT bounded
  * — {@code a*} is {@code {ε, a, aa, …}}, not {@code {ε}} — so cyclic STREAMING
- * diverges and only the star closes it. It is the canonical {@code solveClosed}
- * case, and (concatenation being order-sensitive) the first NON-commutative ⊗.
+ * diverges and only the star closes it. It is the canonical case for solving
+ * cycles through {@link ClosedSemiring#star}, and (concatenation being
+ * order-sensitive) the first NON-commutative ⊗.
  *
  * <p>The tree's {@code equals} is structural, but the semiring LAWS hold only up
  * to LANGUAGE equivalence (regexes denoting the same words), so law kits compare

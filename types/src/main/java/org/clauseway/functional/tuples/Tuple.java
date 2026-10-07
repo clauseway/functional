@@ -4,12 +4,12 @@ package org.clauseway.functional.tuples;
 // ABOUTME: plus the structural contract consumers decompose and rebuild through.
 
 /**
- * The tuple family's shared face. Construction goes through {@link #of};
+ * The tuple family's shared interface. Construction goes through {@link #of};
  * the per-arity classes carry vavr-shaped accessors ({@code _1()} and the
  * {@code _1} field) and {@code apply} destructuring. The structural
  * contract — {@link #arity()}, {@link #get(int)}, {@link #withMembers} —
  * is what generic consumers decompose and rebuild through: one code path
- * for every arity, no per-class tables, and a new arity cannot be
+ * for every arity, no per-class tables, and an added arity cannot be
  * half-supported because the contract lives on the type itself.
  */
 public interface Tuple {
@@ -20,10 +20,10 @@ public interface Tuple {
 	Object get(int i);
 
 	/**
-	 * Same arity, new cargo — the rebuild half of the structural contract;
-	 * refuses a members array of any other length. Rebuild is inherently
-	 * untyped (the cargo is the caller's claim), so the result is spoken
-	 * through this interface.
+	 * Same arity, replacement members — the rebuild half of the structural
+	 * contract; refuses a members array of any other length. Rebuild is
+	 * inherently untyped (the members' types are the caller's claim), so the
+	 * result is typed as this interface.
 	 */
 	Tuple withMembers(Object[] members);
 
@@ -63,7 +63,7 @@ public interface Tuple {
 	}
 
 	/**
-	 * The untyped door: a tuple of the members' arity, refusing arity 0.
+	 * Untyped construction: a tuple of the members' arity, refusing arity 0.
 	 * Dispatch is deterministic — 1-8 always the typed classes, wider
 	 * always {@link TupleN} — so equal arities never meet as different
 	 * shapes. The of/ofAll split follows the house convention: {@code of}

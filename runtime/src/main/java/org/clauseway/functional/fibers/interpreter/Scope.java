@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * The workforce half of a {@link Channel}: a {@link WorkLedger}
+ * The workforce half of a {@link Channel}: a {@code WorkLedger}
  * (running frames counted started/finished; blocked frames recorded with the
  * scope they wait at) and a SEAL — the upward-closed, CAS'd-once declaration
  * that the cell's work is finished. Racy seal reads are sound: a stale false
@@ -29,11 +29,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * suspend on a sealed cell answers immediately, so sealed-place records are
  * always transient); if unsealed, the blocked frame may yet be woken. The
  * cross-scope case that never resolves by itself — a ring of drained scopes
- * mutually blocked — is {@link #groupSeal}'s: the singleton rule applied to
+ * mutually blocked — is {@code groupSeal}'s: the singleton rule applied to
  * a virtual merge (docs/design/group-seal.md).
  *
  * <p>Sealing completes the cell's held waiters
- * ({@link #completeOnSeal}). Backwards propagation is frame-driven:
+ * ({@code completeOnSeal}). Backwards propagation is frame-driven:
  * each resumed waiter's own {@code finished()} retries its scope's seal — no
  * cascade queue.
  */

@@ -37,7 +37,7 @@ public class MFiber<A> {
 		return fiber.getDone(context);
 	}
 
-	/** The sanctioned nesting door, delegated: pure fibers only. */
+	/** Delegates to {@link Fiber#ground()}: pure fibers only. */
 	@Deprecated
 	public Optional<A> ground() {
 		return fiber.ground();

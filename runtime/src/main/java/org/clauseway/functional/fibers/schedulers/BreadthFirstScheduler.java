@@ -26,6 +26,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Breadth-first scheduler: one bucket of frames per fork depth, buckets stepped
+ * shallowest first, frames within a bucket stepped round-robin. Forked children
+ * go one depth below the forking frame; a detached child joins its parent's
+ * depth; a frame resumed from an await re-enters the shallowest bucket. When
+ * the shallowest bucket makes no progress (no frame completes or parks) for
+ * more than {@code crashThreshold} consecutive steps and a deeper bucket
+ * exists, its frames are merged into the next-shallowest bucket. The
+ * one-argument constructor uses a threshold of 10 000.
+ */
 @SuppressWarnings("unchecked")
 public final class BreadthFirstScheduler<A> implements Scheduler<A>, Frame.Effects<BreadthFirstScheduler.Entry>, SearchInspectable {
 

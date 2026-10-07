@@ -11,14 +11,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 /**
- * One scheduler's await state: which queue entries are held by a {@link Channel},
- * and the injection queue their resumes re-enter through — drained at the top
+ * One scheduler's await state: which queue entries are held by a {@link Channel}
+ * or a {@link Scope}, and the injection queue their resumes re-enter through — drained at the top
  * of every step, so an injected frame competes fairly like any other.
  *
  * <p>The queue exists for the WRONG-TIME case, not a wrong-thread one:
  * completions fire mid-step, from inside grow and the seal cascade, and
  * "a completion never touches a run structure" is one rule instead of a
- * re-entrancy proof per scheduler. Today every completion arrives on the
+ * re-entrancy proof per scheduler. Every completion arrives on the
  * scheduler's own thread — growth and seals run in fiber steps, and
  * cross-scheduler sharing is refused. The concurrent types are deliberate
  * forward capacity: when externally-completed sources land, this queue is

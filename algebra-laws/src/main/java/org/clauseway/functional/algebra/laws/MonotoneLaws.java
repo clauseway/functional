@@ -13,11 +13,10 @@ import org.clauseway.functional.laws.Laws;
 /**
  * The law of maps between DIFFERENT orders — {@code a ⊑ b ⇒ f(a) ⊑ f(b)} —
  * checked along a caller-declared ascending chain, so the source side needs
- * no interface (a Package chain works without Package being a lattice). The
- * target order is supplied: an optimizer pricer is monotone into counts
- * ordered DOWNWARD (more knowledge in, fewer-or-equal answers out — pass
- * {@code (x, y) -> x >= y}), and its free theorem is the one the optimizer
- * stands on: stale prices stay sound as knowledge grows.
+ * no interface (the source type need not implement any order). The
+ * target order is supplied as a {@link BiPredicate}, so a map into counts
+ * ordered DOWNWARD (more knowledge in, fewer-or-equal answers out) is
+ * checked by passing {@code (x, y) -> x >= y}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MonotoneLaws {

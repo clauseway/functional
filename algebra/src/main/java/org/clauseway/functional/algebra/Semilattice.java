@@ -16,7 +16,7 @@ package org.clauseway.functional.algebra;
  * semilattice: one value type carrying two semilattice structures has no
  * answer to "which one am I?", so a two-structure type exposes its
  * structures as PROJECTIONS (witness operations, the law kits' style),
- * never by inheriting both faces.
+ * never by implementing {@code Semilattice} for both.
  *
  * <p>What the laws buy an accumulator: idempotence makes duplicate delivery
  * free, commutativity + associativity make arrival order irrelevant, and

@@ -54,8 +54,12 @@ public final class LawChecker {
 	 * Fails unless every non-abstract implementor of a marked interface found
 	 * under {@code mainClasses} is claimed by some {@link LawsFor} annotation
 	 * found under {@code testClasses} — either directly or via an enclosing
-	 * class (anonymous witnesses). The claimed tests themselves run as
-	 * ordinary test classes; this verifies only that the mapping is total.
+	 * class (anonymous witnesses). Also fails when a top-level
+	 * {@link LawsFor}-annotated class under {@code testClasses} declares no
+	 * method carrying one of {@code afterHooks} — the per-class guard that is
+	 * expected to call {@link #verifyClaimsExercised(Class)}. The claimed tests
+	 * themselves run as ordinary test classes; this verifies only that the
+	 * mapping is total and that each claiming test declares its guard.
 	 */
 	@SafeVarargs
 	public final void verify(Path mainClasses, Path testClasses,
@@ -94,9 +98,10 @@ public final class LawChecker {
 	/**
 	 * Per-test-class guard (wire from @AfterClass/@AfterAll): every class
 	 * claimed by the test's {@link LawsFor} was exercised by at least one kit,
-	 * and every exercised class was exercised by the kits its marked
-	 * interfaces demand — a claimed implementor touched only by a foreign kit
-	 * fails here.
+	 * and every exercised class under those claims (the claimed class or a
+	 * class nested in it) was exercised by the kits its marked interfaces
+	 * demand — a claimed implementor touched only by a foreign kit fails
+	 * here. Classes exercised but not claimed by {@code testClass} are ignored.
 	 */
 	public void verifyClaimsExercised(Class<?> testClass) {
 		LawsFor claim = testClass.getAnnotation(LawsFor.class);

@@ -15,11 +15,11 @@ import lombok.experimental.FieldDefaults;
  * its two callers, and the billing difference between them is the two parks'
  * whole difference (emit.md):
  * <ul>
- * <li>{@link #complete} — the channels' door, for VALUE waiters
+ * <li>{@link #complete} — called by {@link Channel}, for VALUE waiters
  * ({@link org.clauseway.functional.fibers.Fiber.Awaiting Fiber.Awaiting}): the park closed the frame's started/finished
- * pair, so the resume re-bills it ({@link Scope#resumed},
+ * pair, so the resume re-bills it ({@code Scope.resumed},
  * started-before-unblocked);</li>
- * <li>{@link #resume} — the scope's door, for SEAL waiters
+ * <li>{@code resume} — called by {@link Scope}, for SEAL waiters
  * ({@link org.clauseway.functional.fibers.Fiber.Sealed Fiber.Sealed}): the pair stayed open through the wait (the ledger
  * is the work), so the resume must not bill again.</li>
  * </ul>

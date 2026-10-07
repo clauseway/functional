@@ -5,7 +5,7 @@ package org.clauseway.functional.fibers.interpreter;
 
 /**
  * The eager-application budget for {@code Done.flatMap}, and the nesting
- * guard for {@code Fiber.ground} — the deprecated-as-marker door, a FRESH
+ * guard for {@code Fiber.ground} — the deprecated-as-marker entry point, a FRESH
  * scheduler run explicitly over a pure fiber, sanctioned ONE level deep.
  */
 public final class EngineGuard {

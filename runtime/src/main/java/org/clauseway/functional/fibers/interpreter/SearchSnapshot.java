@@ -11,7 +11,7 @@ import lombok.Value;
 /**
  * A snapshot of the frames alive in a scheduler at one instant: how many
  * branches, at what depths, and what fiber node each is reduced to. Because
- * frames reference immutable packages, taking one is a shallow read.
+ * frames reference immutable fiber nodes, taking one is a shallow read.
  *
  * Meant to be read between steps on the same thread (drive the scheduler with
  * {@code run(iterations, sink)} and snapshot in between), not concurrently
@@ -24,7 +24,7 @@ public class SearchSnapshot {
 	int frameCount;
 	/** Live frame count per search depth (all at depth 0 for depth-agnostic schedulers). */
 	Map<Integer, Integer> framesByDepth;
-	/** Live frame count per current fiber node kind (Deferred, FlatMap, Done, Forked, Detached). */
+	/** Live frame count per current fiber node kind (Deferred, Named, FlatMap, Done, Forked, Detached, Awaiting, Emit, Sealed). */
 	Map<String, Integer> nodeTypes;
 
 	SearchSnapshot(int frameCount, Map<Integer, Integer> framesByDepth, Map<String, Integer> nodeTypes) {

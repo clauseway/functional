@@ -61,10 +61,10 @@ public final class Frame {
 	}
 
 	/**
-	 * Scheduling policy hooks. {@code completed} and {@code forked} mean the
-	 * frame yielded control and must leave the run queue; {@code detached}
-	 * reports an independent child while the frame itself keeps running —
-	 * the child's frame is born with the given scope (null = unowned).
+	 * Scheduling policy hooks. {@code completed} means the frame yielded
+	 * control and must leave the run queue; {@code forked} and
+	 * {@code detached} report children while the frame itself keeps running —
+	 * a detached child's frame is born with the given scope (null = unowned).
 	 */
 	public interface Effects<E> {
 		void completed(E entry, Object value);
@@ -73,7 +73,7 @@ public final class Frame {
 		 * Queue the fork's children, already MINTED AND BILLED by the
 		 * interpreter (they inherit the forking frame's ambient scope, and
 		 * their birth happened under the forking frame's still-open pair —
-		 * the membership shield is the interpreter's fact, not driver
+		 * the membership shield is the interpreter's fact, not scheduler
 		 * etiquette). Clause order preserved; always at least one child.
 		 * The forking frame continues in the same step, so the children
 		 * must be queued before it runs again.
@@ -110,7 +110,7 @@ public final class Frame {
 
 	/**
 	 * Step this frame once as {@code entry}, reporting events to
-	 * {@code effects}. The dispatch: three families. PLUMBING (deferred, flatMap, done)
+	 * {@code effects}. The dispatch: three families. PLUMBING (deferred, named, flatMap, done)
 	 * mutates the frame and allocates nothing. MOVERS (detached, emit,
 	 * forked) perform their effect and continue in the same step — none can
 	 * block, none has a completion anyone may wait on. PARKERS (awaiting,

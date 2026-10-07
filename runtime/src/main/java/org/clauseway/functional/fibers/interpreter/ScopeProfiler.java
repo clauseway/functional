@@ -16,7 +16,8 @@ import java.util.concurrent.atomic.LongAdder;
  * The engine-semantic profiler: every reduction bills to the stepped frame's
  * owning workforce. A named scope bills under its name; an anonymous one
  * derives its label from its {@link Scope#origin()} — the first construction
- * frame outside the substrate and the caller-supplied skip prefixes — so
+ * frame outside {@code java.}, {@code sun.}, {@link Scope} itself and the
+ * caller-supplied skip prefixes — so
  * every workforce self-labels with the client code that minted it. Root
  * frames (no scope) bill under {@code root}; a named extent running inside
  * a workforce bills under the composite {@code name;workforce} — a two-deep

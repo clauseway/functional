@@ -103,8 +103,8 @@ public final class Semirings {
 	public static final MinPlusSemiring MIN_PLUS = new MinPlusSemiring();
 
 	/**
-	 * The optimizer's price arithmetic as the semiring it always was:
-	 * counting over ℕ∪{∞} with saturation at Long.MAX_VALUE, 0·∞ = 0.
+	 * Price arithmetic as a semiring: counting over ℕ∪{∞} with saturation at
+	 * Long.MAX_VALUE, 0·∞ = 0.
 	 */
 	public static final Semiring<Long> SATURATING = new Semiring<Long>() {
 		@Override
@@ -140,8 +140,8 @@ public final class Semirings {
 	/**
 	 * Provenance: derivations as regular expressions ({@link Provenance}). Idempotent
 	 * (union) and closed (Kleene star) but NOT bounded -- a* != 1 -- so cyclic streaming
-	 * diverges and only the star closes it. The canonical solveClosed witness; concat is
-	 * not commutative.
+	 * diverges and only the star closes it. The canonical {@link ClosedSemiring} witness;
+	 * concat is not commutative.
 	 */
 	public static final class ProvenanceSemiring
 			implements ClosedSemiring<Provenance>, IdempotentSemiring<Provenance> {

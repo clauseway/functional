@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
  * fairness. Both laws are enforced per step; a violating step is a bug in the
  * step function, not a search failure, so it throws. The absorber short-circuits: a terminal state processes no further work.
  *
- * <p>This is the scheduling-free core; {@code fibers.Worklist.drainMonotone} is
- * the same contract drained one fiber step per item, and delegates its checks
- * here.
+ * <p>This is the scheduling-free core; {@link #check} is public so a drain
+ * under external scheduling (one step per item) can enforce the same
+ * contract.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MonotoneDrain {
@@ -85,7 +85,7 @@ public final class MonotoneDrain {
 		return state;
 	}
 
-	/** The two contraction laws, shared with the fibered drain. */
+	/** The two contraction laws; public so a drain under external scheduling can enforce them. */
 	public static <S extends Semilattice<S> & Absorbing> void check(
 			S before, S after, boolean emitsWork) {
 		if (!before.absorbedBy(after)) {

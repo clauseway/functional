@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
- * Prints one line per reduction and per completion/fork/detach event. Wire it
+ * Prints one line per reduction and per completion/fork/detach/await/seal-wait/emit event. Wire it
  * with {@code scheduler.withListener(new PrintingStepListener())}. Every fiber
  * step is verbose by design; override or wrap to filter.
  */

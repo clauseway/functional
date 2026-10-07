@@ -15,9 +15,11 @@ package org.clauseway.functional.algebra;
  * <p>This is the ENTAILMENT reading: {@code a.leq(b)} = "a entails b" =
  * "a knows at least as much as b" (smaller = knows more, the descending
  * convention). Consumers that only compare knowledge — subsumption keys,
- * cache-reuse checks, dedup — should demand THIS bound and no more; both
- * semilattices extend it, deriving {@code leq} from their operation, so any
- * lattice value already qualifies.
+ * cache-reuse checks, dedup — should demand THIS bound and no more.
+ * {@link Semilattice} does not extend it: a semilattice value that also
+ * declares {@code leq} implements both interfaces, and
+ * {@code SemilatticeLaws}' coherence kits certify that its {@code leq}
+ * agrees with or reverses the accumulation order.
  */
 @CheckedBy({"partial-order"})
 public interface PartialOrder<L extends PartialOrder<L>> {

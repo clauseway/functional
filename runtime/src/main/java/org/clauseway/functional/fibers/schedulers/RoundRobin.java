@@ -20,6 +20,13 @@ import java.util.function.Consumer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Round-robin scheduler: a single list of runnable frames stepped in rotation,
+ * with no depth bookkeeping ({@link #snapshot()} reports every frame at depth
+ * 0). Forked children, detached children and frames resumed from an await are
+ * appended to the list; a fork restarts the rotation from the front of the
+ * list.
+ */
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RoundRobin<A> implements Scheduler<A>, Frame.Effects<RoundRobin.Entry>, SearchInspectable {

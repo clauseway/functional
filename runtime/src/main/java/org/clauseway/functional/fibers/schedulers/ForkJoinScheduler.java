@@ -31,14 +31,17 @@ import java.util.function.Consumer;
  * task; a {@code Forked} node forks its options onto the pool (work-stealing),
  * and the forking frame continues at once - fork is a control scatter.
  *
- * Unlike the sequential schedulers, this one is eager and runs each frame's
- * trampoline uninterrupted — the pool provides interleaving. The computation
- * is complete only when every task has finished, including detached fibers,
- * so results and side effects are fully drained before {@link #get()} returns.
- * A pool drive counts no steps: {@code run(iterations, sink)} refuses, and
- * {@link #advance} drives by a poll window instead. Failure is structured —
- * the first throwing frame fails the whole drive and cancels the rest of the
- * tree cooperatively, at each frame's next yield.
+ * Unlike the sequential schedulers, this one starts on the first drive call
+ * ({@link #get()}, {@code run}, {@link #step} or {@link #advance}) and then
+ * runs each frame's trampoline uninterrupted — the pool provides interleaving.
+ * The computation is complete only when every task has finished, including
+ * detached fibers, so results and side effects are fully drained before
+ * {@link #get()} returns. A pool drive counts no steps:
+ * {@code run(iterations, sink)} and {@code run(iterations)} throw
+ * {@link UnsupportedOperationException}, and {@link #advance} drives by a poll
+ * window instead. Failure is structured — the first throwing frame fails the
+ * whole drive, {@link #get()} rethrows that failure, and the rest of the tree
+ * is cancelled cooperatively: each running frame stops before its next step.
  */
 @SuppressWarnings("unchecked")
 public final class ForkJoinScheduler<A> implements Scheduler<A> {
@@ -72,6 +75,7 @@ public final class ForkJoinScheduler<A> implements Scheduler<A> {
 	private volatile A rootValue;
 	private Consumer<? super A> rootSink;
 
+	/** Runs {@code initialFiber} on {@link ForkJoinPool#commonPool()}. */
 	public ForkJoinScheduler(Fiber<A> initialFiber) {
 		this(initialFiber, ForkJoinPool.commonPool());
 	}
@@ -82,6 +86,12 @@ public final class ForkJoinScheduler<A> implements Scheduler<A> {
 		return this;
 	}
 
+	/**
+	 * Runs {@code initialFiber} on {@code pool}; the pool is not shut down by
+	 * {@link #close()}.
+	 *
+	 * @throws NullPointerException if either argument is null
+	 */
 	public ForkJoinScheduler(Fiber<A> initialFiber, ForkJoinPool pool) {
 		if (initialFiber == null)
 			throw new NullPointerException("Initial Fiber cannot be null");

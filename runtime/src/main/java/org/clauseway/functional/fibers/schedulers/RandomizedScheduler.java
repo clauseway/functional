@@ -23,13 +23,13 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * A TESTING scheduler: each step runs a uniformly random runnable frame. Any
- * search property that holds under the fair drivers must hold under every
+ * search property that holds under the fair schedulers must hold under every
  * seed of this one — a result that varies by seed is an ORDER-DEPENDENCE,
  * the bug class equality-based dedup, entailment and value folds are prone
  * to. Deterministic per seed (single-threaded, no time dependence): a
  * failing seed is a permanent reproduction. Uniform choice is
  * probabilistically fair — no starvation, but no fairness law either; this
- * driver asserts semantics, never cost.
+ * scheduler asserts semantics, never cost.
  */
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -52,6 +52,7 @@ public final class RandomizedScheduler<A> implements Scheduler<A>, Frame.Effects
 	private Consumer<? super A> rootSink;
 	private boolean currentCompleted;
 
+	/** A scheduler over {@code fiber} whose frame choices come from {@code new Random(seed)}. */
 	public static <A> RandomizedScheduler<A> of(Fiber<A> fiber, long seed) {
 		ArrayList<Entry> entries = new ArrayList<>();
 		entries.add(new Entry(new Frame(fiber), null));

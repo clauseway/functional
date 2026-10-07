@@ -15,9 +15,8 @@ import org.clauseway.functional.laws.Laws;
  * The endo special case of {@link MonotoneLaws} plus the deflationary axiom:
  * {@code f(x) ⊑ x} and {@code x ⊑ y ⇒ f(x) ⊑ f(y)} — together, the
  * step contract of chaotic iteration: a family of such steps drained in any
- * fair order reaches the same greatest fixpoint. Law-test a step at the desk
- * before wiring it into its loop — a constraint propagator's body (as in
- * the logic engine's FD store) is the canonical example.
+ * fair order reaches the same greatest fixpoint. A constraint propagator's
+ * body is the canonical example of such a step.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ReductorLaws {

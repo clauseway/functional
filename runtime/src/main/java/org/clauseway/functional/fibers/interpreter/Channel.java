@@ -13,16 +13,16 @@ import java.util.function.Predicate;
  * A channel: a monotone value PLUS the workforce producing it.
  * The VALUE is a persistent {@link Semilattice} element that only grows —
  * growth is {@link Semilattice#combine} with a delta, an absorbed delta
- * refuses (strict ascent is a law of the algebra, not caller discipline);
+ * is inert (strict ascent is a law of the algebra, not caller discipline);
  * the WORKFORCE is the private {@link Scope} that work detached into this
  * cell is recorded in, whose quiescence SEALS the value.
  *
  * <p>Waiters are frames, via {@link org.clauseway.functional.fibers.Fiber#await}:
- * held by {@link #suspend}, completed with {@code more(value)} by the first
+ * held by {@code suspend}, completed with {@code more(value)} by the first
  * satisfying growth, or with {@code sealed(value)} — the FINAL value — at
  * the seal.
  *
- * <p>{@link #grow} on a sealed cell THROWS: growing past a delivered
+ * <p>{@code grow} on a sealed cell THROWS: growing past a delivered
  * sealed result would falsify it.
  */
 public class Channel<V extends Semilattice<V>> {
@@ -70,7 +70,10 @@ public class Channel<V extends Semilattice<V>> {
 		this.scope.onSeal(this::completeAllSealed);
 	}
 
-	/** The workforce — for the interpreter's token resolution. */
+	/**
+	 * The workforce: the interpreter compares it with the emitting frame's
+	 * scope at every emit, and records it as the place a blocked frame waits at.
+	 */
 	public Scope scope() {
 		return scope;
 	}
@@ -148,10 +151,6 @@ public class Channel<V extends Semilattice<V>> {
 		}
 	}
 
-	/**
-	 * The seal's completion of held frames, run by {@link Scope} once the
-	 * flag is set: every held frame receives the final value.
-	 */
 	@Override
 	public String toString() {
 		return name != null
@@ -159,6 +158,10 @@ public class Channel<V extends Semilattice<V>> {
 				: "channel@" + Integer.toHexString(System.identityHashCode(this));
 	}
 
+	/**
+	 * The seal's completion of held frames, run by {@link Scope} once the
+	 * flag is set: every held frame receives the final value.
+	 */
 	private void completeAllSealed() {
 		ArrayList<Held<V>> rest;
 		V finalValue;

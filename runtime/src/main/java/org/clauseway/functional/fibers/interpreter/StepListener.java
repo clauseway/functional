@@ -24,7 +24,7 @@ public interface StepListener {
 	/**
 	 * Fired for every reduction, before the node is dispatched. {@code scope}
 	 * is the stepped frame's owning workforce — null at a root frame;
-	 * {@code name} the goal-plane name the frame is inside — null outside
+	 * {@code name} the {@code Fiber.named} chain the frame is inside — null outside
 	 * every named extent.
 	 */
 	default void onStep(Fiber<?> node, Scope scope, String name) {
@@ -42,11 +42,11 @@ public interface StepListener {
 	default void onDetached(Fiber<?> child) {
 	}
 
-	/** A frame parked at a source, awaiting growth or the seal. */
+	/** A frame reached an await on a channel; it parks unless the channel is already sealed. */
 	default void onAwaiting(Fiber.Awaiting<?> awaiting) {
 	}
 
-	/** A frame parked awaiting a scope's seal, billed through the wait. */
+	/** A frame reached a wait for a scope's seal; it parks, billed through the wait, unless the scope is already sealed. */
 	default void onSealed(Fiber.Sealed sealedOn) {
 	}
 
