@@ -22,7 +22,7 @@ import java.util.function.Function;
  * constructed with a scope calls started() at construction (no gap for a
  * racing seal); on completion finished() runs and the seal attempt it
  * returns runs as the frame's own continuation — same scheduler, same
- * fairness. {@link Fiber.Detached} carries the one legal escape from
+ * fairness. {@link org.clauseway.functional.fibers.Fiber.Detached Fiber.Detached} carries the one legal escape from
  * inheritance: an explicit re-parenting scope, or null for unowned.
  * Exactly-once holds by construction — consumer code never calls the
  * Scope methods.

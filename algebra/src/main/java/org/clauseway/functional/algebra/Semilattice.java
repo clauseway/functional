@@ -9,9 +9,9 @@ package org.clauseway.functional.algebra;
  * ORDER {@code x ⊑ y ⟺ combine(x, y) = y} — the direction accumulation
  * moves, under which every semilattice ascends by definition. "Meet" and
  * "join" are the DOMAIN's names for which way it reads this order:
- * {@link JoinSemilattice} extends this with {@code combine = join} (its
+ * a join-semilattice reads it with {@code combine = join} (its
  * {@code leq} coincides with the accumulation order);
- * {@link MeetSemilattice} with {@code combine = meet} (its accumulation
+ * a meet-semilattice with {@code combine = meet} (its accumulation
  * order is its knowledge order reversed). A LATTICE is deliberately NOT a
  * semilattice: one value type carrying two semilattice structures has no
  * answer to "which one am I?", so a two-structure type exposes its
