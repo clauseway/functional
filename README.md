@@ -4,9 +4,9 @@ Functional programming substrate for Java 8: stack-safe suspendable computations
 (fibers) with channels, scopes and termination detection; a continuation monad; a
 family of schedulers that all drive the same step interpreter; and a law-checked
 algebra library (semilattices to semirings) whose property kits ship as their own
-artifact — plus a small monad/transformer library. This is the engine room under
-[`logic`](../logic) (the miniKanren), but nothing in it knows about logic
-programming; it stands alone.
+artifact — plus a small monad/transformer library that stays in the repo as a
+playground. This is the engine room under [`logic`](../logic) (the miniKanren),
+but nothing in it knows about logic programming; it stands alone.
 
 ## Fibers: recursion as data
 
@@ -39,8 +39,8 @@ from a trampoline into a search tree, which is where the schedulers come in.
 
 ## Schedulers: one interpreter, many disciplines
 
-Every scheduler is a driver over the same single-step interpreter (`FiberStep`);
-they differ only in *which suspended frame steps next*:
+Every scheduler is a driver over the same single-step interpreter
+(`fibers/interpreter`); they differ only in *which suspended frame steps next*:
 
 | Scheduler | Discipline |
 |---|---|
@@ -78,8 +78,8 @@ meet and every sleeper is parked home, no new value can ever arrive — that
 is the SEAL, and it completes every waiting consumer with the final value.
 Groups of mutually-feeding channels seal together (the group walk); a drive
 that runs out of work with a consumer still parked refuses loudly and NAMES
-the channel it starved at, instead of hanging. `Worklist` is the same
-discipline for drain-to-quiescence loops.
+the channel it starved at, instead of hanging. `Worklist`, in the playground
+module, is the same discipline for drain-to-quiescence loops.
 
 This is what `logic` builds tabling's answer cells and completion detection
 from — but the primitives are domain-free: a cell is any growing value, a
@@ -93,19 +93,21 @@ seal is any "this monotone process is finished".
 search, tabling, and constraint propagation all trampoline through one engine
 without touching the JVM stack.
 
-## The monad shelf
+## The monad shelf (playground)
 
-`monad/`: `Option`, `Either`, `Try`, `Lazy`, `State`, `Reader`, `Identity`,
-`Free`, `Future`, `Stream` — with `transformer/` stacking (`OptionT`, `EitherT`,
-`TryT`, `FutureT`, `StreamT`) over the `category/` abstractions
-(`Functor`/`Monad`/`Comonad`, `TypeConstructor`, and `Nothing` — the type with
-exactly one value, for effects that only ever signal completion).
+The `functional` module of this repo is a playground, built with the reactor
+and not published: `monad/` (`Option`, `Either`, `Try`, `Lazy`, `State`,
+`Reader`, `Identity`, `Free`, `Future`, `Stream`) with `transformer/` stacking
+(`OptionT`, `EitherT`, `TryT`, `FutureT`, `StreamT`) over the `category/`
+abstractions (`Functor`/`Monad`/`Comonad`, `TypeConstructor`); `step/`, the
+incremental stream shape (`Step`: cons / empty / single / *incomplete*) that
+lets a stream say "no element yet, ask again" — the primitive under fair
+interleaving; `graph/` (small graph builder); `Worklist`. Ideas are tried here
+before they earn a module.
 
-`step/` holds the incremental stream shape (`Step`: cons / empty / single /
-*incomplete*) that lets a stream say "no element yet, ask again" — the primitive
-under fair interleaving. Utilities: `Exceptions` (throwing lambdas without
-ceremony), `Streams` (zip and friends for `java.util.stream`), `Reference`,
-`reflection/Types` (cast helpers), `graph/` (small graph builder).
+The runtime's own utilities ship with it: `Nothing` (the type with exactly one
+value, for effects that only ever signal completion), `Exceptions` (throwing
+lambdas without ceremony), `Optionals`, `Reference`, `Types` (cast helpers).
 
 ## The algebra, with its laws as a shipping artifact
 
@@ -126,39 +128,46 @@ implementor lacks a claiming law test. Consumers declaring their own
 instances get the same audit by depending on `functional-laws` in test
 scope.
 
-## Building
+## Getting it
 
-Java 8, vavr is the only runtime dependency. Maven, currently `-SNAPSHOT`:
+Java 8, no runtime dependencies. On Maven Central under `org.clauseway`:
 
-```bash
-mvn install          # parent; builds the functional module
-```
+| artifact | contents |
+|---|---|
+| `functional-runtime` | fibers, `Cont`, the interpreter and schedulers, channels and scopes, `Nothing` and the utilities |
+| `functional-algebra` | `Semilattice`, `PartialOrder`, `Monoid`, the semiring ladder, `Provenance`, `@CheckedBy` |
+| `functional-types` | `Tuple1`…`Tuple8`, `TupleN`, `Function3`…`Function8` |
+| `functional-laws` | `Laws`, `LawChecker`, `LawRegistry` — the property-kit substrate |
+| `functional-algebra-laws` | the algebra's law kits (`SemilatticeLaws`, `SemiringLaws`, `StarLaws`, …) |
+
+`functional-runtime` brings `-types` and `-algebra` with it; the law kits are
+test-scoped and bring `-laws`:
 
 ```xml
 <dependency>
-    <groupId>com.tgac</groupId>
-    <artifactId>functional</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>org.clauseway</groupId>
+    <artifactId>functional-runtime</artifactId>
+    <version>0.1.0</version>
 </dependency>
 <dependency>                          <!-- law kits for your own instances -->
-    <groupId>com.tgac</groupId>
-    <artifactId>functional-laws</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>org.clauseway</groupId>
+    <artifactId>functional-algebra-laws</artifactId>
+    <version>0.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
+From source, `mvn install` at the root builds every module, the playground
+included.
+
 Consumers: [`logic`](../logic) uses `Cont`, fibers, the scheduler family and
-the algebra as its search engine. The fiber substrate depends on `category/`
-and — deliberately — on `algebra/`: a channel's value is CONTRACTUALLY a
-lawful semilattice, which is what makes growth, dedup and sealing theorems
-rather than conventions. It could still graduate to its own artifact
-(together with `algebra/` and `category/`) if an external consumer ever
-wants the substrate without the monad shelf — a shelved decision with that
-trigger, not a plan.
+the algebra as its search engine. The fiber substrate depends — deliberately —
+on `algebra/`: a channel's value is CONTRACTUALLY a lawful semilattice, which
+is what makes growth, dedup and sealing theorems rather than conventions.
 
 ## Status
 
-Unreleased (`-SNAPSHOT`); APIs may still move. If you touch this library while
-working on `logic`, remember the sibling rule: `mvn install` here before `logic`
-can see the change.
+0.1.0 on Maven Central. Pre-1.0: the shape is settled, and the API carries no
+compatibility guarantee until 1.0 — minor versions may move it. `logic`
+consumes the released version; to develop `logic` against a local change here,
+point its dependency at this repo's `-SNAPSHOT` and `mvn install` here first.
