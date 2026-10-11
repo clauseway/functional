@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.clauseway</groupId>
 		<artifactId>functional-parent</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 
 	<name>Clauseway Functional Playground</name>
@@ -26,17 +26,17 @@
 		<dependency>
 			<groupId>org.clauseway</groupId>
 			<artifactId>functional-runtime</artifactId>
-			<version>0.1.0</version>
+			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.clauseway</groupId>
 			<artifactId>functional-types</artifactId>
-			<version>0.1.0</version>
+			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.clauseway</groupId>
 			<artifactId>functional-algebra</artifactId>
-			<version>0.1.0</version>
+			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>io.vavr</groupId>
