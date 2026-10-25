@@ -1,3 +1,5 @@
+# Tests every push and pull request against the released upstreams the POM
+# names.
 name: CI
 
 on:
