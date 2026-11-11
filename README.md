@@ -8,6 +8,11 @@ artifact — plus a small monad/transformer library that stays in the repo as a
 playground. This is the engine room under [`logic`](../logic) (the miniKanren),
 but nothing in it knows about logic programming; it stands alone.
 
+The essay that argues for this stack, the development notes and the
+tutorial are at [clauseway.org](https://clauseway.org/): start with the
+[blog](https://clauseway.org/blog/) or the
+[tutorial](https://clauseway.org/tutorial/).
+
 ## Fibers: recursion as data
 
 A `Fiber<A>` is a computation that describes its own control flow instead of
